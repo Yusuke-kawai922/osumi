@@ -35,13 +35,13 @@ data_context = {
             "title": "ブルガリアンスクワット",
             "date": "10/15 撮影",
             "point": "膝が内側に入らないよう修正しました。「お尻に乗る感覚」を意識してください。",
-            "youtube_id": "dQw4w9WgXcQ"
+            "youtube_id": "q_b1yN47kk0"
         },
         {
             "title": "ラットプルダウン",
             "date": "10/15 撮影",
             "point": "肩がすくまないように、胸を張りながら引き下げましょう。",
-            "youtube_id": "dQw4w9WgXcQ"
+            "youtube_id": "q_b1yN47kk0"
         }
     ],
     

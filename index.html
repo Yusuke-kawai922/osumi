@@ -4,219 +4,309 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>10月度 月次レポート</title>
+    <title>2025年10月度 レポート</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
             theme: {
                 extend: {
+                    fontFamily: {
+                        sans: ['"Noto Sans JP"', 'sans-serif'],
+                        serif: ['"Noto Serif JP"', 'serif'],
+                    },
                     colors: {
-                        primary: {
-                            DEFAULT: '#1E40AF', // 落ち着いた深い青
-                            light: '#EFF6FF',
+                        theme: {
+                            dark: '#0F172A',  /* 深いネイビー */
+                            gray: '#F8FAFC',  /* 薄いグレー背景 */
+                            text: '#334155',  /* 本文グレー */
                         },
                         accent: {
-                            teal: '#0D9488',
-                            warm: '#A8A29E',
-                        },
+                            green: '#10B981', /* 成功/減少 */
+                            red: '#F43F5E',   /* 注意 */
+                        }
                     }
                 }
             }
         }
     </script>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Noto+Serif+JP:wght@400;600;700&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/lucide@latest"></script>
-    <!-- Chart.js CDN -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         body {
-            font-family: 'Noto Sans JP', sans-serif;
-            background-color: #FAFAFA;
-            color: #1F2937;
+            background-color: #FFFFFF;
+            color: #0F172A;
             -webkit-text-size-adjust: 100%;
+            font-feature-settings: "palt";
         }
-        .tracking-wide-num { letter-spacing: -0.02em; }
+        body.modal-open {
+            overflow: hidden;
+        }
     </style>
 </head>
 
-<!-- pb-20に変更し、フッターの高さに合わせてスクロールの止まり位置を調整 -->
-<body class="antialiased pb-20">
+<body class="antialiased pb-24 font-sans">
 
-    <div class="max-w-md mx-auto min-h-screen bg-white border-x border-gray-100">
+    <div class="max-w-md mx-auto min-h-screen bg-white relative">
 
-        <!-- ヘッダー -->
-        <header class="pt-10 px-6 pb-6 bg-white">
-            <div class="border-b border-gray-100 pb-6">
-                <p class="text-xs font-bold text-gray-500 mb-2 tracking-widest">MONTHLY REPORT</p>
-                <div class="flex justify-between items-end">
-                    <h1 class="text-3xl font-bold text-gray-900">10月度<br>結果報告</h1>
-                    <div class="text-right">
-                        <p class="text-sm font-bold text-gray-900">山田 太郎 様</p>
-                        <p class="text-xs text-gray-500 mt-1">10/1 - 10/31</p>
-                    </div>
+        <!-- ヘッダーエリア -->
+        <header class="pt-12 px-6 pb-8">
+            <p class="text-[10px] font-bold text-gray-400 mb-4 tracking-widest uppercase">月次パーソナルレポート</p>
+            
+            <div class="flex justify-between items-start mb-8">
+                <div>
+                    <h1 class="text-4xl font-serif font-bold text-theme-dark leading-tight tracking-tight">
+                        2025年<br>
+                        10月度
+                    </h1>
+                </div>
+                <div class="text-right mt-1">
+                    <p class="text-sm font-bold text-theme-dark tracking-widest mb-1">山田 太郎 様</p>
+                    <p class="text-[10px] text-gray-400">10/01 - 10/31</p>
                 </div>
             </div>
 
-            <!-- 進捗バー -->
-            <div class="pt-6">
-                <div class="flex justify-between items-end mb-2">
-                    <span class="text-sm font-bold text-gray-900">ゴール到達度</span>
-                    <span class="text-2xl font-bold text-primary tracking-wide-num">45<span class="text-sm text-gray-500 ml-1">%</span></span>
-                </div>
-                <div class="w-full bg-gray-100 h-2 rounded-full overflow-hidden">
-                    <div class="bg-primary h-full rounded-full" style="width: 45%;"></div>
-                </div>
-                <p class="mt-3 text-sm text-gray-600 leading-relaxed bg-primary-light p-3 rounded-lg border border-blue-100">
-                    順調です。3ヶ月コースの折り返し地点を通過しました。
-                </p>
-            </div>
+            <div class="border-t border-gray-100"></div>
         </header>
 
-        <div class="px-6 space-y-12 mt-4">
+        <div class="px-6 space-y-16">
 
-            <!-- 1. 成果 (Result) - グラフ追加 -->
+            <!-- 01 / 結果サマリー -->
             <section>
-                <h2 class="text-sm font-bold text-gray-500 tracking-widest mb-4 uppercase">01 / Result</h2>
-                
-                <!-- 数値グリッド -->
-                <div class="grid grid-cols-2 gap-8 py-4 border-t border-gray-100">
-                    <div>
-                        <p class="text-xs text-gray-500 font-bold mb-1">体重</p>
-                        <div class="flex items-baseline">
-                            <span class="text-4xl font-bold text-gray-900 tracking-wide-num">58.2</span>
-                            <span class="text-sm text-gray-500 ml-1">kg</span>
+                <div class="mb-10">
+                    <h2 class="text-xs font-bold text-theme-dark tracking-widest font-sans mb-8">01 / 結果サマリー</h2>
+
+                    <!-- 1次元フェーズバー (修正箇所) -->
+                    <div class="relative px-2 mb-2">
+                        <!-- バー背景 -->
+                        <div class="absolute top-1/2 left-0 w-full h-0.5 bg-gray-100 -translate-y-1/2 rounded-full"></div>
+                        <!-- 完了済みバー -->
+                        <div class="absolute top-1/2 left-0 w-1/2 h-0.5 bg-theme-dark -translate-y-1/2 rounded-full"></div>
+
+                        <div class="relative flex justify-between items-center text-center">
+                            <!-- Phase 1 -->
+                            <div class="flex flex-col items-center gap-2">
+                                <div class="w-2.5 h-2.5 rounded-full bg-theme-dark"></div>
+                                <p class="text-[10px] font-bold text-gray-300 tracking-widest mt-1">減量期</p>
+                            </div>
+
+                            <!-- Phase 2 (Current) -->
+                            <div class="flex flex-col items-center gap-2 -mt-4">
+                                <span class="bg-theme-dark text-white text-[9px] font-bold px-2 py-0.5 rounded-full tracking-wider mb-1 shadow-md">NOW</span>
+                                <div class="w-4 h-4 rounded-full bg-theme-dark border-4 border-white shadow-sm z-10"></div>
+                                <p class="text-xs font-serif font-bold text-theme-dark tracking-widest mt-1">筋肉維持期</p>
+                            </div>
+
+                            <!-- Phase 3 -->
+                            <div class="flex flex-col items-center gap-2">
+                                <div class="w-2.5 h-2.5 rounded-full bg-gray-200"></div>
+                                <p class="text-[10px] font-bold text-gray-300 tracking-widest mt-1">完成期</p>
+                            </div>
                         </div>
-                        <p class="text-sm font-bold text-primary mt-1">−1.2 kg</p>
                     </div>
+                </div>
+                
+                <div class="grid grid-cols-2 gap-10 mb-8">
+                    <!-- 体重 -->
                     <div>
-                        <p class="text-xs text-gray-500 font-bold mb-1">体脂肪率</p>
-                        <div class="flex items-baseline">
-                            <span class="text-4xl font-bold text-gray-900 tracking-wide-num">28.0</span>
-                            <span class="text-sm text-gray-500 ml-1">%</span>
+                        <p class="text-[10px] text-gray-400 font-bold mb-1 tracking-widest">体重</p>
+                        <div class="flex items-baseline mb-1">
+                            <span class="text-5xl font-serif font-medium text-theme-dark mr-1">58.2</span>
+                            <span class="text-xs text-gray-400 font-bold">kg</span>
                         </div>
-                        <p class="text-sm font-bold text-primary mt-1">−0.5 %</p>
+                        <p class="text-sm font-bold text-accent-green flex items-center gap-1">
+                            <i data-lucide="arrow-down" class="w-3 h-3"></i> 1.2 kg
+                        </p>
+                    </div>
+                    <!-- 体脂肪率 -->
+                    <div>
+                        <p class="text-[10px] text-gray-400 font-bold mb-1 tracking-widest">体脂肪率</p>
+                        <div class="flex items-baseline mb-1">
+                            <span class="text-5xl font-serif font-medium text-theme-dark mr-1">28.0</span>
+                            <span class="text-xs text-gray-400 font-bold">%</span>
+                        </div>
+                        <p class="text-sm font-bold text-accent-green flex items-center gap-1">
+                            <i data-lucide="arrow-down" class="w-3 h-3"></i> 0.5 %
+                        </p>
                     </div>
                 </div>
 
-                <!-- グラフエリア -->
-                <div class="mb-6 pt-2 pb-6 border-b border-gray-100">
-                    <!-- タブ切り替え -->
-                    <div class="flex gap-2 mb-4">
-                        <button onclick="switchChart('weight')" id="tab-weight" class="px-4 py-1.5 rounded-full text-xs font-bold transition-colors bg-primary text-white">
+                <!-- チャートエリア -->
+                <div class="bg-theme-gray rounded-2xl p-6">
+                    <div class="flex gap-4 mb-6">
+                        <button onclick="switchChart('weight')" id="tab-weight" class="text-xs font-bold text-theme-dark border-b-2 border-theme-dark pb-1 transition-colors tracking-wider">
                             体重推移
                         </button>
-                        <button onclick="switchChart('fat')" id="tab-fat" class="px-4 py-1.5 rounded-full text-xs font-bold transition-colors bg-gray-100 text-gray-500 hover:bg-gray-200">
+                        <button onclick="switchChart('fat')" id="tab-fat" class="text-xs font-bold text-gray-400 border-b-2 border-transparent pb-1 transition-colors hover:text-gray-600 tracking-wider">
                             体脂肪率
                         </button>
                     </div>
-                    
-                    <!-- チャートキャンバス -->
-                    <div class="relative w-full h-48">
+                    <div class="relative w-full h-40">
                         <canvas id="resultChart"></canvas>
                     </div>
                 </div>
+                
+                <p class="mt-6 text-sm font-serif text-theme-dark leading-relaxed text-center">
+                    「筋肉を守りながら体脂肪を<br>しっかり落とせた1ヶ月でした。」
+                </p>
             </section>
 
-            <!-- 2. 要因 (Analysis) -->
-            <section>
-                <h2 class="text-sm font-bold text-gray-500 tracking-widest mb-4 uppercase">02 / Analysis</h2>
-                <div class="bg-gray-50 rounded-lg p-5 border border-gray-100">
-                    <p class="text-sm font-bold text-gray-900 mb-4">今月の成功要因</p>
-                    
-                    <!-- 分割バーグラフ -->
-                    <div class="flex w-full h-4 rounded-full overflow-hidden mb-5 bg-gray-200">
-                        <div class="bg-primary h-full" style="width: 40%;"></div>
-                        <div class="bg-accent-teal h-full" style="width: 30%;"></div>
-                        <div class="bg-accent-warm h-full" style="width: 20%;"></div>
-                        <div class="bg-gray-400 h-full" style="width: 10%;"></div>
+            <!-- 02 / トレーニング分析 (Dark Theme) -->
+            <section class="bg-theme-dark text-white -mx-6 px-6 py-12">
+                <h2 class="text-xs font-bold text-white/70 tracking-widest mb-8">02 / トレーニング活動量</h2>
+                
+                <div class="bg-white/5 rounded-2xl p-6 border border-white/10 mb-8 relative overflow-hidden">
+                    <div class="absolute -right-4 -top-4 opacity-10">
+                        <i data-lucide="dumbbell" class="w-32 h-32 text-white"></i>
                     </div>
-
-                    <div class="space-y-4">
-                        <div class="flex items-start justify-between">
-                            <div>
-                                <div class="flex items-center gap-2 mb-1">
-                                    <span class="w-2 h-2 rounded-full bg-primary"></span>
-                                    <span class="text-sm font-bold text-gray-900">食事管理 (40%)</span>
-                                </div>
-                                <p class="text-xs text-gray-600 pl-4">夜の糖質制限が数値減少のベースを作りました。</p>
-                            </div>
-                        </div>
-                        <div class="flex items-start justify-between">
-                            <div>
-                                <div class="flex items-center gap-2 mb-1">
-                                    <span class="w-2 h-2 rounded-full bg-accent-teal"></span>
-                                    <span class="text-sm font-bold text-gray-900">脚トレーニング (30%)</span>
-                                </div>
-                                <p class="text-xs text-gray-600 pl-4">スクワット等での「基礎代謝アップ」が効いています。</p>
-                            </div>
-                        </div>
-                        <div class="flex items-start justify-between">
-                            <div>
-                                <div class="flex items-center gap-2 mb-1">
-                                    <span class="w-2 h-2 rounded-full bg-accent-warm"></span>
-                                    <span class="text-sm font-bold text-gray-900">有酸素・歩数 (20%)</span>
-                                </div>
-                                <p class="text-xs text-gray-600 pl-4">通勤時の歩行が脂肪燃焼を加速させました。</p>
-                            </div>
-                        </div>
-                        <div class="flex items-start justify-between">
-                            <div>
-                                <div class="flex items-center gap-2 mb-1">
-                                    <span class="w-2 h-2 rounded-full bg-gray-400"></span>
-                                    <span class="text-sm font-bold text-gray-900">背中・姿勢 (10%)</span>
-                                </div>
-                                <p class="text-xs text-gray-600 pl-4">姿勢改善によるウエストラインの変化に貢献。</p>
-                            </div>
-                        </div>
+                    
+                    <p class="text-[10px] text-white/60 font-bold mb-2 tracking-widest">総負荷量（ボリューム）</p>
+                    <div class="flex items-baseline mb-4">
+                        <span class="text-5xl font-serif font-medium text-white mr-2">48,000</span>
+                        <span class="text-sm text-white/60">kg</span>
+                    </div>
+                    <div class="inline-flex items-center gap-2 bg-white/10 px-3 py-1.5 rounded text-xs font-medium text-white/90">
+                        <i data-lucide="truck" class="w-3 h-3"></i>
+                        トラック 24台分 の負荷
                     </div>
                 </div>
-            </section>
 
-            <!-- 3. 動画ログ (全表示リスト・スクロールなし) -->
-            <section>
-                <div class="flex items-center justify-between mb-4">
-                    <h2 class="text-sm font-bold text-gray-500 tracking-widest uppercase">03 / Video Log</h2>
-                    <span class="text-xs bg-primary-light text-primary px-2 py-1 rounded font-bold">全5種目</span>
+                <div class="space-y-6">
+                    <div>
+                        <div class="flex justify-between items-end mb-2">
+                            <span class="text-xs font-bold tracking-widest text-white/80">脚トレーニング</span>
+                            <span class="text-xs font-serif text-white">35%</span>
+                        </div>
+                        <div class="w-full bg-white/10 h-1 rounded-full overflow-hidden">
+                            <div class="bg-white h-full" style="width: 35%;"></div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="flex justify-between items-end mb-2">
+                            <span class="text-xs font-bold tracking-widest text-white/80">有酸素運動</span>
+                            <span class="text-xs font-serif text-white">30%</span>
+                        </div>
+                        <div class="w-full bg-white/10 h-1 rounded-full overflow-hidden">
+                            <div class="bg-white/60 h-full" style="width: 30%;"></div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="flex justify-between items-end mb-2">
+                            <span class="text-xs font-bold tracking-widest text-white/80">背中・体幹</span>
+                            <span class="text-xs font-serif text-white">25%</span>
+                        </div>
+                        <div class="w-full bg-white/10 h-1 rounded-full overflow-hidden">
+                            <div class="bg-white/40 h-full" style="width: 25%;"></div>
+                        </div>
+                    </div>
                 </div>
                 
-                <!-- 動画プレーヤーエリア（固定） -->
-                <div id="playerContainer" class="mb-4 sticky top-0 bg-white z-10 pt-2 pb-2">
-                    <!-- JSで描画 -->
-                </div>
+                <p class="mt-6 text-xs text-white/50">※脚トレの増加が基礎代謝の向上に直結しています。</p>
+            </section>
 
-                <!-- リストエリア（個別スクロールなし・全表示） -->
-                <div class="border border-gray-200 rounded-lg overflow-hidden">
-                    <div class="bg-gray-50 px-4 py-2 border-b border-gray-200">
-                        <p class="text-xs font-bold text-gray-500">セッションメニュー (タップして再生)</p>
-                    </div>
-                    <!-- 高さ指定なし、中身に応じて伸びる -->
-                    <div class="bg-white" id="playlistContainer">
-                        <!-- JSで描画 -->
-                    </div>
+            <!-- 03 / 動画フィードバック -->
+            <section>
+                <div class="flex justify-between items-center mb-8">
+                    <h2 class="text-xs font-bold text-theme-dark tracking-widest">03 / 動画フィードバック</h2>
+                </div>
+                
+                <!-- リストエリア -->
+                <div class="space-y-4" id="videoListContainer">
+                    <!-- JSで描画 -->
                 </div>
             </section>
 
-            <!-- 4. 次月 (Next) -->
+            <!-- 04 / 来月の戦略 (Dark Theme Card) -->
             <section>
-                <h2 class="text-sm font-bold text-gray-500 tracking-widest mb-4 uppercase">04 / Next Step</h2>
-                <div class="border border-gray-200 rounded-lg p-6">
-                    <p class="text-xs font-bold text-primary mb-2">来月のテーマ</p>
-                    <h3 class="text-xl font-bold text-gray-900 mb-3">背中の引き締め</h3>
-                    <p class="text-sm text-gray-600 leading-relaxed">
-                        下半身の基礎はできました。来月は姿勢改善も兼ねて背中を鍛え、ウエストラインを強調します。
+                <h2 class="text-xs font-bold text-theme-dark tracking-widest mb-8">04 / 来月の戦略</h2>
+                
+                <div class="bg-theme-dark rounded-2xl p-8 text-white shadow-xl shadow-slate-200">
+                    <div class="flex gap-3 mb-4 opacity-50">
+                        <i data-lucide="quote" class="w-6 h-6 fill-current"></i>
+                    </div>
+                    
+                    <h3 class="text-lg font-bold mb-4 leading-relaxed font-serif">
+                        「<span class="text-accent-green">活動量の底上げ</span>」が<br>来月のテーマです。
+                    </h3>
+                    <p class="text-sm text-white/80 leading-relaxed mb-8 font-light">
+                        ジムでの強度は十分確保できています。あとは日常の代謝を少しだけ上げることで、減少ペースを加速させましょう。
                     </p>
+
+                    <p class="text-[10px] font-bold tracking-widest text-white/40 uppercase mb-4">アクションプラン</p>
+                    
+                    <ul class="space-y-4">
+                        <li class="flex items-center gap-4">
+                            <div class="w-5 h-5 rounded border border-white/30 flex-shrink-0"></div>
+                            <div>
+                                <p class="text-sm font-bold">脚トレ強度の維持</p>
+                                <p class="text-[10px] text-white/50">現状の重量・セット数をキープ</p>
+                            </div>
+                        </li>
+                        <li class="flex items-center gap-4">
+                            <div class="w-5 h-5 rounded border border-white/30 flex-shrink-0"></div>
+                            <div>
+                                <p class="text-sm font-bold">平日 +1,000歩</p>
+                                <p class="text-[10px] text-white/50">エスカレーターNG / 一駅歩く</p>
+                            </div>
+                        </li>
+                        <li class="flex items-center gap-4">
+                            <div class="w-5 h-5 rounded border border-white/30 flex-shrink-0"></div>
+                            <div>
+                                <p class="text-sm font-bold">自宅スクワット</p>
+                                <p class="text-[10px] text-white/50">入浴前に20回 × 2セット</p>
+                            </div>
+                        </li>
+                    </ul>
                 </div>
             </section>
 
         </div>
 
         <!-- フッター -->
-        <div class="fixed bottom-0 left-0 w-full bg-white border-t border-gray-100 p-4 z-50 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.05)]">
-            <div class="max-w-md mx-auto">
-                <button class="w-full py-3 border border-gray-300 rounded-md text-sm font-bold text-gray-700 flex items-center justify-center gap-2 hover:bg-gray-50 transition-colors">
+        <div class="fixed bottom-0 left-0 w-full bg-white/90 backdrop-blur-md border-t border-gray-100 p-4 z-40">
+            <div class="max-w-md mx-auto flex gap-3">
+                <button class="flex-1 py-3 bg-theme-dark text-white rounded-lg text-sm font-bold flex items-center justify-center gap-2 hover:bg-slate-800 transition-colors shadow-lg shadow-slate-200 tracking-wider">
                     <i data-lucide="share" class="w-4 h-4"></i>
-                    レポートを保存・共有
+                    レポートを共有
                 </button>
+            </div>
+        </div>
+
+        <!-- 動画再生モーダル -->
+        <div id="videoModal" class="fixed inset-0 z-50 hidden" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+            <div class="fixed inset-0 bg-theme-dark/80 backdrop-blur-sm transition-opacity opacity-0 cursor-pointer" id="modalOverlay" onclick="closeModal()"></div>
+            <div class="fixed inset-0 z-10 overflow-y-auto pointer-events-none">
+                <div class="flex min-h-full items-center justify-center p-4 text-center">
+                    <div class="relative transform overflow-hidden bg-white text-left shadow-2xl transition-all sm:w-full sm:max-w-lg w-full rounded-2xl pointer-events-auto opacity-0 translate-y-4 scale-95" id="modalPanel">
+                        <div class="absolute right-4 top-4 z-10">
+                            <button type="button" onclick="closeModal()" class="rounded-full bg-black/20 p-2 text-white hover:bg-black/40 focus:outline-none backdrop-blur-md transition-colors">
+                                <i data-lucide="x" class="w-5 h-5"></i>
+                            </button>
+                        </div>
+                        <div class="relative aspect-video bg-black flex items-center justify-center w-full group cursor-pointer">
+                            <div class="w-16 h-16 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center group-hover:scale-110 transition-transform">
+                                <i data-lucide="play" class="w-6 h-6 text-white fill-current ml-1"></i>
+                            </div>
+                        </div>
+                        <div class="px-6 py-6 pb-8">
+                            <div class="mb-6">
+                                <div class="flex justify-between items-start mb-2">
+                                    <h3 class="text-xl font-serif font-bold text-theme-dark" id="modalTitle">タイトル</h3>
+                                    <span class="text-[10px] font-bold tracking-widest text-gray-400 uppercase pt-1.5" id="modalDate">日付</span>
+                                </div>
+                                <div class="bg-gray-50 border border-gray-100 rounded-xl p-5 flex gap-4">
+                                    <i data-lucide="info" class="w-5 h-5 text-theme-dark flex-shrink-0 mt-0.5"></i>
+                                    <p class="text-sm text-gray-600 font-medium leading-relaxed" id="modalPoint">
+                                        ここにアドバイスが入ります。
+                                    </p>
+                                </div>
+                            </div>
+                            <button id="modalCheckBtn" onclick="toggleCheckCurrent()" class="w-full py-4 rounded-xl text-sm font-bold flex items-center justify-center gap-2 transition-all">
+                                <!-- JSで中身切り替え -->
+                            </button>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -228,11 +318,12 @@
         /* --- Chart.js 設定 --- */
         let chartInstance = null;
         const chartCtx = document.getElementById('resultChart').getContext('2d');
-
-        // データ定義
         const chartLabels = ['9/01', '9/15', '10/01', '10/15', '10/31'];
         const dataWeight = [60.5, 60.0, 59.2, 58.8, 58.2];
         const dataFat = [29.5, 29.0, 28.8, 28.5, 28.0];
+
+        const colorDark = '#0F172A';
+        const colorGreen = '#10B981';
 
         function initChart() {
             chartInstance = new Chart(chartCtx, {
@@ -240,204 +331,155 @@
                 data: {
                     labels: chartLabels,
                     datasets: [{
-                        label: '体重 (kg)',
+                        label: '体重',
                         data: dataWeight,
-                        borderColor: '#1E40AF', // Primary Color
-                        backgroundColor: 'rgba(30, 64, 175, 0.1)',
+                        borderColor: colorDark,
+                        backgroundColor: 'transparent',
                         borderWidth: 2,
                         pointBackgroundColor: '#fff',
-                        pointBorderColor: '#1E40AF',
+                        pointBorderColor: colorDark,
                         pointRadius: 4,
                         pointHoverRadius: 6,
-                        tension: 0.3,
-                        fill: true
+                        pointBorderWidth: 2,
+                        tension: 0,
                     }]
                 },
                 options: {
                     responsive: true,
                     maintainAspectRatio: false,
-                    plugins: {
-                        legend: { display: false },
-                        tooltip: {
-                            backgroundColor: '#1F2937',
-                            titleFont: { family: "'Noto Sans JP', sans-serif" },
-                            bodyFont: { family: "'Noto Sans JP', sans-serif", weight: 'bold' },
-                            padding: 10,
-                            cornerRadius: 4,
-                            displayColors: false,
-                        }
-                    },
+                    plugins: { legend: { display: false }, tooltip: { enabled: true } },
                     scales: {
-                        y: {
-                            grid: { color: '#F3F4F6' },
-                            ticks: { font: { size: 10 }, color: '#9CA3AF' }
+                        y: { 
+                            grid: { display: false }, 
+                            ticks: { font: { family: "'Noto Serif JP', serif", size: 10 }, color: '#94a3b8' } 
                         },
-                        x: {
-                            grid: { display: false },
-                            ticks: { font: { size: 10 }, color: '#9CA3AF' }
+                        x: { 
+                            grid: { color: '#f1f5f9' }, 
+                            ticks: { font: { family: "'Noto Serif JP', serif", size: 10 }, color: '#94a3b8' } 
                         }
                     }
                 }
             });
         }
 
-        // グラフ切り替え処理
         window.switchChart = function(type) {
             const btnWeight = document.getElementById('tab-weight');
             const btnFat = document.getElementById('tab-fat');
+            
+            const activeClass = "text-theme-dark border-theme-dark";
+            const inactiveClass = "text-gray-400 border-transparent hover:text-gray-600";
 
             if (type === 'weight') {
-                // UI更新
-                btnWeight.className = "px-4 py-1.5 rounded-full text-xs font-bold transition-colors bg-primary text-white";
-                btnFat.className = "px-4 py-1.5 rounded-full text-xs font-bold transition-colors bg-gray-100 text-gray-500 hover:bg-gray-200";
+                btnWeight.className = `text-xs font-bold border-b-2 pb-1 transition-colors tracking-wider ${activeClass}`;
+                btnFat.className = `text-xs font-bold border-b-2 pb-1 transition-colors tracking-wider ${inactiveClass}`;
                 
-                // データ更新
-                chartInstance.data.datasets[0].label = '体重 (kg)';
                 chartInstance.data.datasets[0].data = dataWeight;
-                chartInstance.data.datasets[0].borderColor = '#1E40AF';
-                chartInstance.data.datasets[0].pointBorderColor = '#1E40AF';
-                chartInstance.data.datasets[0].backgroundColor = 'rgba(30, 64, 175, 0.1)';
+                chartInstance.data.datasets[0].label = '体重';
+                chartInstance.data.datasets[0].borderColor = colorDark;
+                chartInstance.data.datasets[0].pointBorderColor = colorDark;
             } else {
-                // UI更新
-                btnWeight.className = "px-4 py-1.5 rounded-full text-xs font-bold transition-colors bg-gray-100 text-gray-500 hover:bg-gray-200";
-                btnFat.className = "px-4 py-1.5 rounded-full text-xs font-bold transition-colors bg-accent-teal text-white";
+                btnWeight.className = `text-xs font-bold border-b-2 pb-1 transition-colors tracking-wider ${inactiveClass}`;
+                btnFat.className = `text-xs font-bold border-b-2 pb-1 transition-colors tracking-wider ${activeClass}`;
                 
-                // データ更新
-                chartInstance.data.datasets[0].label = '体脂肪率 (%)';
                 chartInstance.data.datasets[0].data = dataFat;
-                chartInstance.data.datasets[0].borderColor = '#0D9488'; // Teal Color
-                chartInstance.data.datasets[0].pointBorderColor = '#0D9488';
-                chartInstance.data.datasets[0].backgroundColor = 'rgba(13, 148, 136, 0.1)';
+                chartInstance.data.datasets[0].label = '体脂肪率';
+                chartInstance.data.datasets[0].borderColor = colorGreen;
+                chartInstance.data.datasets[0].pointBorderColor = colorGreen;
             }
             chartInstance.update();
         }
 
-        /* --- 動画ログ処理 --- */
+        /* --- 動画リスト & モーダル処理 --- */
         const videoData = [
-            {
-                id: 1,
-                title: "ブルガリアンスクワット",
-                date: "10/15 撮影",
-                point: "膝が内側に入らないよう修正しました。「お尻に乗る感覚」を意識してください。",
-                isChecked: false
-            },
-            {
-                id: 2,
-                title: "ラットプルダウン",
-                date: "10/15 撮影",
-                point: "肩がすくまないように、胸を張りながら引き下げましょう。脇を締めるイメージです。",
-                isChecked: false
-            },
-            {
-                id: 3,
-                title: "プランク",
-                date: "10/01 撮影",
-                point: "腰が反っています。お腹に力を入れて、背中を平らに保つ意識を持ちましょう。",
-                isChecked: false
-            },
-            {
-                id: 4,
-                title: "ダンベルプレス",
-                date: "10/01 撮影",
-                point: "下ろす位置が深すぎると肩を痛めます。肘が90度になる位置で止めましょう。",
-                isChecked: false
-            },
-            {
-                id: 5,
-                title: "ウォーキングランジ",
-                date: "10/01 撮影",
-                point: "上半身が前に倒れすぎています。目線を上げて、胸を張ったまま踏み出しましょう。",
-                isChecked: false
-            }
+            { id: 1, title: "ブルガリアンスクワット", date: "10/15 撮影", point: "膝が内側に入らないよう修正しました。「お尻に乗る感覚」を意識してください。", isChecked: false },
+            { id: 2, title: "ラットプルダウン", date: "10/15 撮影", point: "肩がすくまないように、胸を張りながら引き下げましょう。脇を締めるイメージです。", isChecked: false },
+            { id: 3, title: "プランク", date: "10/01 撮影", point: "腰が反っています。お腹に力を入れて、背中を平らに保つ意識を持ちましょう。", isChecked: false },
+            { id: 4, title: "ダンベルプレス", date: "10/01 撮影", point: "下ろす位置が深すぎると肩を痛めます。肘が90度になる位置で止めましょう。", isChecked: false },
+            { id: 5, title: "ウォーキングランジ", date: "10/01 撮影", point: "上半身が前に倒れすぎています。目線を上げて、胸を張ったまま踏み出しましょう。", isChecked: false }
         ];
 
-        let currentIndex = 0;
+        let currentModalIndex = -1;
 
         function initVideoLog() {
-            renderPlayer();
             renderList();
         }
 
-        function renderPlayer() {
-            const data = videoData[currentIndex];
-            const container = document.getElementById('playerContainer');
-            
-            container.innerHTML = `
-                <div class="bg-white rounded-lg border border-gray-200 overflow-hidden shadow-sm">
-                    <div class="p-4 border-b border-gray-100 flex justify-between items-center bg-gray-50">
-                        <span class="text-lg font-bold text-gray-900">${data.title}</span>
-                        <span class="text-xs text-gray-500">${data.date}</span>
-                    </div>
-                    
-                    <div class="relative w-full aspect-video bg-gray-900 flex items-center justify-center">
-                        <div class="w-14 h-14 bg-white/90 rounded-full flex items-center justify-center shadow-lg cursor-pointer hover:scale-105 transition-transform">
-                            <i data-lucide="play" class="w-6 h-6 text-gray-900 fill-current ml-1"></i>
-                        </div>
-                    </div>
-
-                    <div class="p-4">
-                        <div class="flex gap-3 mb-4">
-                            <i data-lucide="lightbulb" class="w-5 h-5 text-primary flex-shrink-0 mt-0.5"></i>
-                            <p class="text-sm text-gray-800 font-medium leading-relaxed">
-                                ${data.point}
-                            </p>
-                        </div>
-                        
-                        <button onclick="toggleCheck(${currentIndex})" class="w-full py-3 rounded-md text-sm font-bold flex items-center justify-center gap-2 transition-all ${data.isChecked ? 'bg-primary text-white' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'}">
-                            ${data.isChecked ? '<i data-lucide="check-circle" class="w-4 h-4"></i> 確認しました' : '<i data-lucide="check" class="w-4 h-4"></i> 自宅で復習したらチェック'}
-                        </button>
-                    </div>
-                </div>
-            `;
-            lucide.createIcons();
-        }
-
         function renderList() {
-            const container = document.getElementById('playlistContainer');
+            const container = document.getElementById('videoListContainer');
             
-            // 最後のアイテムかどうかをチェックして、border-bの有無を切り替える
             container.innerHTML = videoData.map((item, index) => `
-                <div onclick="selectVideo(${index})" id="item-${index}" class="flex items-center justify-between p-4 ${index === videoData.length - 1 ? '' : 'border-b border-gray-100'} cursor-pointer transition-colors ${index === currentIndex ? 'bg-primary-light' : 'bg-white hover:bg-gray-50'}">
-                    <div class="flex items-center gap-3">
-                        <div class="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 ${index === currentIndex ? 'bg-primary text-white' : 'bg-gray-200 text-gray-500'}">
-                            <i data-lucide="${index === currentIndex ? 'play' : 'video'}" class="w-4 h-4 ${index === currentIndex ? 'fill-current' : ''}"></i>
+                <div onclick="openModal(${index})" class="group bg-white border border-gray-100 rounded-xl p-4 flex items-center justify-between cursor-pointer hover:border-theme-dark hover:shadow-lg hover:shadow-gray-100 transition-all duration-300">
+                    <div class="flex items-center gap-5">
+                        <div class="w-12 h-12 rounded-full bg-gray-50 flex items-center justify-center flex-shrink-0 group-hover:bg-theme-dark transition-colors">
+                            <i data-lucide="play" class="w-5 h-5 text-theme-dark fill-current ml-1 group-hover:text-white transition-colors"></i>
                         </div>
                         <div>
-                            <p class="text-sm font-bold ${index === currentIndex ? 'text-primary' : 'text-gray-900'}">${item.title}</p>
-                            ${item.isChecked ? '<p class="text-xs text-primary font-bold mt-0.5">✓ 確認済み</p>' : ''}
+                            <p class="text-[10px] font-bold text-gray-400 tracking-widest mb-1">${item.date}</p>
+                            <h3 class="text-base font-serif font-bold text-theme-dark">${item.title}</h3>
                         </div>
                     </div>
-                    ${index === currentIndex ? '<span class="text-xs font-bold text-primary bg-white px-2 py-1 rounded border border-blue-100">選択中</span>' : '<i data-lucide="chevron-right" class="w-4 h-4 text-gray-300"></i>'}
+                    ${item.isChecked 
+                        ? '<div class="w-8 h-8 rounded-full bg-accent-green/10 flex items-center justify-center"><i data-lucide="check" class="w-4 h-4 text-accent-green"></i></div>' 
+                        : '<i data-lucide="chevron-right" class="w-5 h-5 text-gray-300 group-hover:text-theme-dark transition-colors"></i>'}
                 </div>
             `).join('');
             
             lucide.createIcons();
         }
 
-        function selectVideo(index) {
-            currentIndex = index;
-            renderPlayer();
-            renderList();
-            
-            // プレーヤー位置までスクロール
-            const player = document.getElementById('playerContainer');
-            const offset = 80; 
-            const elementPosition = player.getBoundingClientRect().top + window.scrollY;
-            const offsetPosition = elementPosition - offset;
+        const modal = document.getElementById('videoModal');
+        const overlay = document.getElementById('modalOverlay');
+        const panel = document.getElementById('modalPanel');
 
-            window.scrollTo({
-                top: offsetPosition,
-                behavior: "smooth"
-            });
+        function openModal(index) {
+            currentModalIndex = index;
+            const data = videoData[index];
+
+            document.getElementById('modalTitle').textContent = data.title;
+            document.getElementById('modalDate').textContent = data.date;
+            document.getElementById('modalPoint').textContent = data.point;
+            updateModalButton(data.isChecked);
+
+            modal.classList.remove('hidden');
+            document.body.classList.add('modal-open');
+
+            setTimeout(() => {
+                overlay.classList.remove('opacity-0');
+                panel.classList.remove('opacity-0', 'translate-y-4', 'scale-95');
+            }, 10);
         }
 
-        function toggleCheck(index) {
-            videoData[index].isChecked = !videoData[index].isChecked;
-            renderPlayer();
+        function closeModal() {
+            overlay.classList.add('opacity-0');
+            panel.classList.add('opacity-0', 'translate-y-4', 'scale-95');
+
+            setTimeout(() => {
+                modal.classList.add('hidden');
+                document.body.classList.remove('modal-open');
+                currentModalIndex = -1;
+            }, 300);
+        }
+
+        function updateModalButton(isChecked) {
+            const btn = document.getElementById('modalCheckBtn');
+            if (isChecked) {
+                btn.className = "w-full py-4 rounded-xl text-sm font-bold flex items-center justify-center gap-2 transition-all bg-accent-green text-white shadow-lg shadow-green-100";
+                btn.innerHTML = '<i data-lucide="check-circle" class="w-5 h-5"></i> 確認済み';
+            } else {
+                btn.className = "w-full py-4 rounded-xl text-sm font-bold flex items-center justify-center gap-2 transition-all bg-theme-dark text-white hover:bg-slate-800 shadow-lg shadow-slate-200";
+                btn.innerHTML = '<i data-lucide="check" class="w-5 h-5"></i> 復習したらチェック';
+            }
+            lucide.createIcons();
+        }
+
+        function toggleCheckCurrent() {
+            if (currentModalIndex === -1) return;
+            const data = videoData[currentModalIndex];
+            data.isChecked = !data.isChecked;
+            updateModalButton(data.isChecked);
             renderList();
         }
 
-        // 初期化実行
         initChart();
         initVideoLog();
 
